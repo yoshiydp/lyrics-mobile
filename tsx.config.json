@@ -1,0 +1,12 @@
+{
+  "loader": {
+    ".svg": "empty",
+    ".png": "empty",
+    ".jpg": "empty",
+    ".jpeg": "empty",
+    ".gif": "empty",
+    ".mp3": "empty",
+    ".wav": "empty",
+    ".ico": "empty"
+  }
+}

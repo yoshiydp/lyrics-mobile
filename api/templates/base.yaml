@@ -1,0 +1,30 @@
+openapi: 3.0.3
+info:
+  title: My API
+  version: 1.0.0
+servers:
+  - url: http://192.168.1.7:3000
+    description: Local Swagger Mock API
+paths:
+  /data:
+    get:
+      summary: Get all data
+      description: Returns all mock data defined in /src/data directory.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              examples:
+                MEMO_DATA:
+                  $ref: '#/components/examples/MEMO_DATA'
+                PROFILE_DATA:
+                  $ref: '#/components/examples/PROFILE_DATA'
+                PROJECT_DATA:
+                  $ref: '#/components/examples/PROJECT_DATA'
+                RECORD_DATA:
+                  $ref: '#/components/examples/RECORD_DATA'
+                TRACK_DATA:
+                  $ref: '#/components/examples/TRACK_DATA'
+components:
+  examples: {}
