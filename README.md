@@ -76,6 +76,14 @@ Developed using Expo.
    inet 192.168.0.23
    ```
 
+   api/openapi.yaml の以下の箇所を自身の IP アドレスに変更：
+
+   ```
+   servers:
+    - url: http://192.168.1.7:3000
+      description: Local Swagger Mock API
+   ```
+
    その IP を使って他デバイスのブラウザからアクセス：
 
    ```
