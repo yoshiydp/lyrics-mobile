@@ -1,11 +1,11 @@
-import { View, Image, Pressable, ImageSourcePropType } from 'react-native';
+import { View, Image, Pressable } from 'react-native';
 import { FontAwesome6 } from '@expo/vector-icons';
 import Icon from '@/components/ui/Icon';
 import type { FontAwesome6IconName } from '@/types/iconTypes';
 import styles from './ProfileIcon.styles';
 
 interface Props {
-  thumbnail: ImageSourcePropType;
+  thumbnail: { uri: string };
   editable?: boolean;
 }
 

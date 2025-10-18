@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { Animated, View, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -12,13 +11,15 @@ import { useScreenAnimation } from '@/hooks/useScreenAnimation';
 import { useAnimatedSequence } from '@/hooks/useAnimatedSequence';
 import { useModal } from '@/contexts/ModalContext';
 import { MODAL_MESSAGES } from '@/constants/messages';
-import { DefaultService } from '@/apiClient/services/DefaultService';
+import { useProfile } from '@/hooks/useProfile';
 import styles from './ProfileScreen.styles';
 
 export default function ProfileScreen() {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { titleAnim1, titleAnim2, startListAnimation } = useScreenAnimation();
+  const { profile, loading } = useProfile();
+  const { showConfirmModal, showLoading, hideLoading, closeModal } = useModal();
 
   const scrollAnim = useAnimatedSequence({
     start: startListAnimation,
@@ -38,8 +39,6 @@ export default function ProfileScreen() {
     opacity,
     transform: [{ translateX }, { translateY }],
   });
-
-  const { showConfirmModal, showLoading, hideLoading, closeModal } = useModal();
 
   const handleProfileEditPress = () => navigation.navigate('ProfileEdit', {});
 
@@ -64,27 +63,7 @@ export default function ProfileScreen() {
     });
   };
 
-  const [profile, setProfile] = useState<{
-    username: string;
-    email: string;
-    thumbnail: string;
-    socialAccounts?: any[];
-  } | null>(null);
-
-  useEffect(() => {
-    async function fetchProfile() {
-      try {
-        const res = await DefaultService.getProfile();
-        setProfile(res);
-      } catch (error) {
-        console.error('Failed to fetch profile', error);
-      }
-    }
-
-    fetchProfile();
-  }, []);
-
-  if (!profile) {
+  if (loading || !profile) {
     return (
       <HomeTabsScreenTemplate
         title="PROFILE"

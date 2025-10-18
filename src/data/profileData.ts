@@ -1,15 +1,10 @@
-import XIcon from '@/assets/icons/x-icon.svg';
-import InstagramIcon from '@/assets/icons/instagram-icon.svg';
-import GoogleIcon from '@/assets/icons/google-icon.svg';
-import ProfileThumbnail from '@/assets/images/sample/profile.jpg';
-
 export const PROFILE_DATA = {
-  thumbnail: ProfileThumbnail,
+  thumbnail: 'http://192.168.1.7:3000/images/sample/profile.jpg',
   username: 'User Profile Name',
   email: 'contact@example.com',
   socialAccounts: [
-    { icon: XIcon, username: '@user_name', isLinked: true },
-    { icon: InstagramIcon, username: '@user_name', isLinked: true },
-    { icon: GoogleIcon, username: 'Yoshi Watanabe', isLinked: true },
+    { provider: 'x', username: '@user_name', isLinked: true },
+    { provider: 'instagram', username: '@user_name', isLinked: true },
+    { provider: 'google', username: 'Yoshi Watanabe', isLinked: true },
   ],
 };

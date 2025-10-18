@@ -1,88 +1,79 @@
-import { ScrollView, View } from 'react-native';
+import { ScrollView, View, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import OverlayScreenTemplate from '@/components/features/overlay/OverlayScreenTemplate';
 import ProfileIcon from '@/components/features/profile/ProfileIcon';
 import EditableFormControl from '@/components/ui/form/EditableFormControl';
 import SubmitButton from '@/components/ui/buttons/SubmitButton';
 import { useModal } from '@/contexts/ModalContext';
-import { PROFILE_DATA } from '@/data/profileData';
 import { MODAL_MESSAGES } from '@/constants/messages';
+import { useProfile } from '@/hooks/useProfile';
 import styles from './ProfileEditScreen.styles';
 
 export default function ProfileEditScreen() {
-  const SOCIAL_SERVICES = ['X', 'Instagram', 'Google'];
   const navigation = useNavigation();
+  const { profile, loading } = useProfile();
   const { showConfirmModal, showLoading, hideLoading, closeModal } = useModal();
-
-  const handleGoBack = () => {
-    navigation.goBack();
-  };
 
   const onSaveProfile = () => {
     showLoading();
-
+    // TODO: 実際には PATCH / PUT API 呼び出しを行う
     setTimeout(() => {
       hideLoading();
-      handleGoBack();
+      navigation.goBack();
     }, 3000);
   };
 
-  const onSubmitRemoveLink = () => {
-    closeModal();
-    showLoading();
-
-    setTimeout(() => {
-      hideLoading();
-      closeModal();
-    }, 3000);
-  };
-
-  const onPressRemoveLink = (index: number) => {
-    const service = SOCIAL_SERVICES[index] ?? 'SNS';
-
+  const onPressRemoveLink = (serviceName: string) => {
     showConfirmModal({
-      message: MODAL_MESSAGES.confirmRemoveLink.message(service),
+      message: MODAL_MESSAGES.confirmRemoveLink.message(serviceName),
       description: MODAL_MESSAGES.confirmRemoveLink.description,
       submitButton: {
         label: MODAL_MESSAGES.confirmRemoveLink.submitButtonLabel,
-        onPress: onSubmitRemoveLink,
+        onPress: () => {
+          closeModal();
+          showLoading();
+          setTimeout(() => {
+            hideLoading();
+            closeModal();
+          }, 3000);
+        },
       },
     });
   };
 
-  const onPressLinkAccount = (index: number) => {
-    switch (index) {
-      case 0:
-        return console.log('Link X account');
-      case 1:
-        return console.log('Link Instagram account');
-      case 2:
-        return console.log('Link Google account');
-      default:
-        break;
-    }
-  };
+  if (loading || !profile) {
+    return (
+      <OverlayScreenTemplate>
+        <View style={styles.container}>
+          <ActivityIndicator size="large" />
+        </View>
+      </OverlayScreenTemplate>
+    );
+  }
 
   return (
     <OverlayScreenTemplate>
       <ScrollView style={styles.container}>
-        <ProfileIcon thumbnail={PROFILE_DATA.thumbnail} editable />
+        <ProfileIcon thumbnail={profile.thumbnail} editable />
         <View style={styles.formControlContainer}>
-          <EditableFormControl
-            label="User Name"
-            formValue={PROFILE_DATA.username}
-          />
-          <EditableFormControl label="Email" formValue={PROFILE_DATA.email} />
+          <EditableFormControl label="User Name" formValue={profile.username} />
+          <EditableFormControl label="Email" formValue={profile.email} />
           <SubmitButton
             containerClassName={styles.saveButton}
+            label="SAVE"
             onPress={onSaveProfile}
           />
           <EditableFormControl
             label="Link Social Accounts"
             showSocialAccounts
-            socialAccounts={PROFILE_DATA.socialAccounts}
-            onPressRemoveLink={onPressRemoveLink}
-            onPressLinkAccount={onPressLinkAccount}
+            socialAccounts={profile.socialAccounts}
+            onPressRemoveLink={(index: number) => {
+              const target = profile.socialAccounts?.[index];
+              const serviceName = target
+                ? (target as any).provider ?? 'SNS'
+                : 'SNS';
+              onPressRemoveLink(serviceName);
+            }}
           />
         </View>
       </ScrollView>

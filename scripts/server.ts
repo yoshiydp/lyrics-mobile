@@ -9,6 +9,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use(
+  '/images',
+  express.static(path.resolve(__dirname, '../src/assets/images')),
+);
+
 const openapiPath = path.resolve(__dirname, '../api/openapi.yaml');
 
 if (!fs.existsSync(openapiPath)) {

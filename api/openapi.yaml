@@ -224,17 +224,17 @@ components:
           isBookmarked: true
     PROFILE_DATA:
       value:
-        thumbnail: {}
+        thumbnail: http://192.168.1.7:3000/images/sample/profile.jpg
         username: User Profile Name
         email: contact@example.com
         socialAccounts:
-          - icon: {}
+          - provider: x
             username: '@user_name'
             isLinked: true
-          - icon: {}
+          - provider: instagram
             username: '@user_name'
             isLinked: true
-          - icon: {}
+          - provider: google
             username: Yoshi Watanabe
             isLinked: true
     PROJECT_DATA:
