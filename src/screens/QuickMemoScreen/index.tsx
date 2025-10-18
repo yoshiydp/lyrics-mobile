@@ -20,9 +20,8 @@ export default function QuickMemoScreen() {
   const MIN_BODY_HEIGHT = 200;
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-
   const route = useRoute<RouteProp<RootStackParamList, 'QuickMemo'>>();
-  const params = (route.params as RootStackParamList['QuickMemo']) ?? {
+  const params = route.params ?? {
     title: '',
     body: '',
     isBookmarked: false,
@@ -48,6 +47,12 @@ export default function QuickMemoScreen() {
   const { showConfirmModal, showLoading, hideLoading, closeModal } = useModal();
   const richText = useRef<RichEditor>(null);
 
+  useEffect(() => {
+    if (params.body && richText.current) {
+      richText.current.setContentHTML(params.body);
+    }
+  }, [params.body]);
+
   const isBodyEmpty = !body || body === '<p></p>' || body.trim() === '';
 
   const handleGoBack = () => {
@@ -58,7 +63,6 @@ export default function QuickMemoScreen() {
           label: MODAL_MESSAGES.confirmQuickMemoGoBack.submitButtonLabel,
           onPress: () => {
             closeModal();
-
             navigation.goBack();
           },
         },
@@ -84,7 +88,6 @@ export default function QuickMemoScreen() {
     } finally {
       setTimeout(() => {
         hideLoading();
-
         if (params.source === 'Drafts') {
           navigation.navigate('MemoList', { source: params.source });
         } else {
@@ -99,11 +102,10 @@ export default function QuickMemoScreen() {
   };
 
   useEffect(() => {
-    console.log('params from Drafts', params.source);
     const remainingHeight =
       containerHeight - (headerHeight + titleHeight + submitHeight + 80);
     setBodyHeight(Math.max(MIN_BODY_HEIGHT, remainingHeight));
-  }, [params, containerHeight, headerHeight, titleHeight, submitHeight]);
+  }, [containerHeight, headerHeight, titleHeight, submitHeight]);
 
   const items: HeaderToolBarButton[] = [
     { ...HEADER_TOOLBAR_TEMPLATES.back, onPress: handleGoBack },
