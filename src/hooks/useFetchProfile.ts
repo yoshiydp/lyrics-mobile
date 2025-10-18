@@ -17,7 +17,7 @@ export interface ProfileType {
   socialAccounts?: SocialAccount[];
 }
 
-export function useProfile() {
+export function useFetchProfile() {
   const [profile, setProfile] = useState<ProfileType | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);

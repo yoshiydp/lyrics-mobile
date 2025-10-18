@@ -11,14 +11,14 @@ import { useScreenAnimation } from '@/hooks/useScreenAnimation';
 import { useAnimatedSequence } from '@/hooks/useAnimatedSequence';
 import { useModal } from '@/contexts/ModalContext';
 import { MODAL_MESSAGES } from '@/constants/messages';
-import { useProfile } from '@/hooks/useProfile';
+import { useFetchProfile } from '@/hooks/useFetchProfile';
 import styles from './ProfileScreen.styles';
 
 export default function ProfileScreen() {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { titleAnim1, titleAnim2, startListAnimation } = useScreenAnimation();
-  const { profile, loading } = useProfile();
+  const { profile, loading } = useFetchProfile();
   const { showConfirmModal, showLoading, hideLoading, closeModal } = useModal();
 
   const scrollAnim = useAnimatedSequence({

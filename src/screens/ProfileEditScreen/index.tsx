@@ -6,12 +6,12 @@ import EditableFormControl from '@/components/ui/form/EditableFormControl';
 import SubmitButton from '@/components/ui/buttons/SubmitButton';
 import { useModal } from '@/contexts/ModalContext';
 import { MODAL_MESSAGES } from '@/constants/messages';
-import { useProfile } from '@/hooks/useProfile';
+import { useFetchProfile } from '@/hooks/useFetchProfile';
 import styles from './ProfileEditScreen.styles';
 
 export default function ProfileEditScreen() {
   const navigation = useNavigation();
-  const { profile, loading } = useProfile();
+  const { profile, loading } = useFetchProfile();
   const { showConfirmModal, showLoading, hideLoading, closeModal } = useModal();
 
   const onSaveProfile = () => {
